@@ -24,7 +24,6 @@ function calcularIRPF(bruto, inss) {
 
     valorIRPF = baseIRPF * (aliquota / 100);
     
-    console.log("valor", valorIRPF, "base", baseIRPF)
     if (baseIRPF <= 2112.00 && valorIRPF > 0) {
         valorIRPF = 0;
     }else if ((baseIRPF > 2112.00 && baseIRPF <= 2826.65) && valorIRPF > 158.40) {
