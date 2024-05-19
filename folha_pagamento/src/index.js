@@ -1,9 +1,11 @@
 const readline = require('readline');
+const fs = require('fs')
 const calculaContribuicao = require('./calculo_inss');
 const calcularIRPF = require('./calculo_imposto_renda');
 const calcularSalarioLiquido = require('./calculo_salario_liquido');
 const formataCPF = require('./formata_cpf');
 const formataData = require('./formata_data');
+
 
 const input = readline.createInterface(
     process.stdin,
@@ -33,8 +35,7 @@ input.question("Qual o nome do funcionário?", nomeFuncionario => {
                     let contribuicaoINSS = calculaContribuicao(salario)
                     let contribuicaoIRPF = calcularIRPF(salario, contribuicaoINSS)
                     let salarioLiquido = calcularSalarioLiquido(salario, contribuicaoINSS, contribuicaoIRPF, outrosDescontos)
-                
-                    console.log(`
+                    let folhaDePagamento =`
                         --- Folha de Pagamento --- 
                         Data de Geração: ${data}
                         Nome: ${nome}
@@ -47,9 +48,21 @@ input.question("Qual o nome do funcionário?", nomeFuncionario => {
                         Outros Descontos: R$ ${parseFloat(outrosDescontos).toFixed(2)}
                         --- ---
                         Salário Líquido: R$ ${salarioLiquido}
-                        `)
-                    
-                    input.close()   
+                        `
+                    console.log(folhaDePagamento)
+
+                    input.question("Deseja baixar PDF dessa Folha de Pagamento (S ou N)?", baixarPDF => {
+                        let pdf = baixarPDF.toLocaleUpperCase();
+                        if (pdf = "S") {
+                            fs.writeFileSync(`Folha_de_Pagamento - ${nome}.pdf`, folhaDePagamento)
+                            console.log("Folha de Pagamento gerada com sucesso!!")
+
+                        }
+
+                        console.log("Folha de Pagamento Finalizada")
+                        
+                        input.close()   
+                    })   
                 })   
             })   
         }) 
